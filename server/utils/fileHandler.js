@@ -14,15 +14,11 @@ const getAllTasks = async () => {
 };
 
 const saveTasks = async (tasks) => {
-  try {
-    await fs.writeFile(
-      config.dataFilePath,
-      JSON.stringify(tasks, null, 2),
-      "utf8",
-    );
-  } catch (error) {
-    throw error;
-  }
+  await fs.writeFile(
+    config.dataFilePath,
+    JSON.stringify(tasks, null, 2),
+    "utf8",
+  );
 };
 
 const getTaskById = async (id) => {

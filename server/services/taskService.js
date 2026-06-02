@@ -2,7 +2,7 @@ const { getAllTasks, saveTasks, getTaskById } = require("../utils/fileHandler");
 const crypto = require("crypto");
 
 const getTasks = async () => {
-  return await getAllTasks();
+  return getAllTasks();
 };
 
 const getTask = async (id) => {
