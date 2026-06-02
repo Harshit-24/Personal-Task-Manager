@@ -1,10 +1,10 @@
-const TaskItem = ({ task, onDelete, onToggle, isOverdue }) => {
+const TaskItem = ({ task, onDelete, onToggle, onEdit, isOverdue }) => {
   const taskIsOverdue = !task.completed && isOverdue(task.dueDate);
   const isCompleted = task.completed;
 
   return (
     <div
-      className={`bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 group ${
+      className={`bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 ${
         taskIsOverdue
           ? "border-l-4 border-red-500"
           : isCompleted
@@ -71,7 +71,25 @@ const TaskItem = ({ task, onDelete, onToggle, isOverdue }) => {
             )}
           </div>
         </div>
-        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex gap-2">
+          <button
+            onClick={() => onEdit(task)}
+            className="p-2.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
           <button
             onClick={() => onDelete(task.id)}
             className="p-2.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"

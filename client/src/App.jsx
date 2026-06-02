@@ -12,6 +12,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
+  const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
     fetchTasks();
@@ -37,10 +38,23 @@ function App() {
     }
   };
 
+  const handleUpdateTask = async (id, taskData) => {
+    try {
+      const updatedTask = await taskService.updateTask(id, taskData);
+      setTasks(tasks.map((task) => (task.id === id ? updatedTask : task)));
+      setEditingTask(null);
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
   const handleDeleteTask = async (id) => {
     try {
       await taskService.deleteTask(id);
       setTasks(tasks.filter((task) => task.id !== id));
+      if (editingTask?.id === id) {
+        setEditingTask(null);
+      }
     } catch (error) {
       console.error("Error deleting task:", error);
     }
@@ -53,6 +67,14 @@ function App() {
     } catch (error) {
       console.error("Error toggling task:", error);
     }
+  };
+
+  const handleEditTask = (task) => {
+    setEditingTask(task);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingTask(null);
   };
 
   const filteredTasks = tasks.filter((task) => {
@@ -106,12 +128,17 @@ function App() {
               tasks={filteredTasks}
               onDelete={handleDeleteTask}
               onToggle={handleToggleTask}
+              onEdit={handleEditTask}
               isOverdue={isOverdue}
             />
           </div>
 
           <div className="lg:col-span-1">
-            <TaskForm onSubmit={handleCreateTask} />
+            <TaskForm
+              onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
+              editingTask={editingTask}
+              onCancelEdit={handleCancelEdit}
+            />
           </div>
         </div>
       </div>
