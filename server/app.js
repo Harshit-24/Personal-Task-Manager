@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const config = require("./config/config");
 const errorHandler = require("./middleware/errorHandler");
+const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
 
@@ -19,7 +20,7 @@ app.get("/health", (req, res) => {
   });
 });
 
-// API routes will be added here
+app.use("/api/tasks", taskRoutes);
 
 // 404 handler
 app.use((req, res) => {

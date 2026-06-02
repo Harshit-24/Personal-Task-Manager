@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": "8a2911e4-15d1-402f-87c5-316d14a70c1f",
+    "title": "Brush Teeths",
+    "description": "Urgent",
+    "dueDate": "2026-06-02",
+    "completed": false,
+    "createdAt": "2026-06-02T12:22:15.011Z",
+    "updatedAt": "2026-06-02T12:22:15.014Z"
+  }
+]
