@@ -4,35 +4,82 @@ const TaskForm = ({ onSubmit, editingTask, onCancelEdit }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [titleError, setTitleError] = useState("");
+  const [apiError, setApiError] = useState("");
 
   useEffect(() => {
     if (editingTask) {
       setTitle(editingTask.title);
       setDescription(editingTask.description || "");
       setDueDate(editingTask.dueDate || "");
+      setTitleError("");
+      setApiError("");
     }
   }, [editingTask]);
+
+  const handleTitleChange = (e) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+
+    if (newTitle.trim().length > 0 && newTitle.trim().length < 3) {
+      setTitleError("Title must be at least 3 characters long");
+    } else {
+      setTitleError("");
+    }
+
+    setApiError("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim()) {
-      alert("Please enter a task title");
+    setApiError("");
+
+    const trimmedTitle = title.trim();
+
+    if (!trimmedTitle) {
+      setTitleError("Title is required");
       return;
     }
 
+    if (trimmedTitle.length < 3) {
+      setTitleError("Title must be at least 3 characters long");
+      return;
+    }
+
+    setTitleError("");
+
     try {
+      const taskData = {
+        title,
+        description,
+      };
+
+      if (dueDate) {
+        taskData.dueDate = dueDate;
+      }
+
       if (editingTask) {
-        await onSubmit(editingTask.id, { title, description, dueDate });
+        await onSubmit(editingTask.id, taskData);
       } else {
-        await onSubmit({ title, description, dueDate });
+        await onSubmit(taskData);
       }
 
       setTitle("");
       setDescription("");
       setDueDate("");
+      setTitleError("");
+      setApiError("");
     } catch (error) {
       console.error("Error submitting task:", error);
+
+      if (error.response?.data?.message) {
+        setApiError(error.response.data.message);
+      } else if (error.message) {
+        setApiError(error.message);
+      } else {
+        setApiError("Failed to save task. Please try again.");
+      }
     }
   };
 
@@ -40,6 +87,8 @@ const TaskForm = ({ onSubmit, editingTask, onCancelEdit }) => {
     setTitle("");
     setDescription("");
     setDueDate("");
+    setTitleError("");
+    setApiError("");
     onCancelEdit();
   };
 
@@ -109,6 +158,12 @@ const TaskForm = ({ onSubmit, editingTask, onCancelEdit }) => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
+        {apiError && (
+          <div className="border-[2px] border-red-500 bg-red-50 p-3">
+            <p className="text-xs font-bold text-red-600">{apiError}</p>
+          </div>
+        )}
+
         <div className="space-y-1.5">
           <label className="block text-[10px] font-bold uppercase tracking-[0.2em]">
             Title
@@ -116,10 +171,13 @@ const TaskForm = ({ onSubmit, editingTask, onCancelEdit }) => {
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleTitleChange}
             placeholder="What needs doing?"
             className="w-full border-[2px] border-black bg-white px-3 py-2.5 text-sm font-medium focus:outline-none"
           />
+          {titleError && (
+            <p className="text-xs font-bold text-red-600">{titleError}</p>
+          )}
         </div>
         <div className="space-y-1.5">
           <label className="block text-[10px] font-bold uppercase tracking-[0.2em]">
