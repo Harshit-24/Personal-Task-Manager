@@ -1,35 +1,35 @@
 const FilterButtons = ({ filter, setFilter }) => {
   return (
-    <div className="flex gap-3">
+    <div className="flex border-[3px] border-black bg-white shadow-[3px_3px_0_0_black]">
       <button
         onClick={() => setFilter("all")}
-        className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+        className={`px-5 py-3 text-xs font-bold uppercase tracking-widest transition-colors ${
           filter === "all"
-            ? "bg-white text-purple-700 shadow-md hover:shadow-lg hover:scale-105"
-            : "bg-white/20 backdrop-blur-sm text-white hover:bg-white/30"
+            ? "bg-[color:var(--brand)] text-black"
+            : "bg-white hover:bg-gray-50"
         }`}
       >
-        All
+        all
       </button>
       <button
         onClick={() => setFilter("active")}
-        className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+        className={`border-l-[3px] border-black px-5 py-3 text-xs font-bold uppercase tracking-widest transition-colors ${
           filter === "active"
-            ? "bg-white text-purple-700 shadow-md hover:shadow-lg hover:scale-105"
-            : "bg-white/20 backdrop-blur-sm text-white hover:bg-white/30"
+            ? "bg-[color:var(--brand)] text-black"
+            : "bg-white hover:bg-gray-50"
         }`}
       >
-        Active
+        active
       </button>
       <button
         onClick={() => setFilter("completed")}
-        className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+        className={`border-l-[3px] border-black px-5 py-3 text-xs font-bold uppercase tracking-widest transition-colors ${
           filter === "completed"
-            ? "bg-white text-purple-700 shadow-md hover:shadow-lg hover:scale-105"
-            : "bg-white/20 backdrop-blur-sm text-white hover:bg-white/30"
+            ? "bg-[color:var(--brand)] text-black"
+            : "bg-white hover:bg-gray-50"
         }`}
       >
-        Completed
+        completed
       </button>
     </div>
   );

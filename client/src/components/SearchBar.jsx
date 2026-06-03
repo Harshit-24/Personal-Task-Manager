@@ -1,15 +1,8 @@
 const SearchBar = ({ searchQuery, setSearchQuery }) => {
   return (
-    <div className="relative">
-      <input
-        type="text"
-        placeholder="Search tasks..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full px-5 py-4 pl-14 bg-white rounded-xl border-2 border-transparent focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all shadow-md text-gray-700 placeholder-gray-400"
-      />
+    <div className="relative flex-1">
       <svg
-        className="w-6 h-6 text-gray-400 absolute left-5 top-1/2 -translate-y-1/2"
+        className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-black"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -21,6 +14,13 @@ const SearchBar = ({ searchQuery, setSearchQuery }) => {
           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
         />
       </svg>
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="SEARCH TASKS..."
+        className="w-full border-[3px] border-black bg-white py-3 pl-11 pr-4 text-sm font-medium placeholder:text-gray-400 placeholder:tracking-wider focus:outline-none focus:shadow-[3px_3px_0_0_black] focus:-translate-x-[2px] focus:-translate-y-[2px] transition-all"
+      />
     </div>
   );
 };

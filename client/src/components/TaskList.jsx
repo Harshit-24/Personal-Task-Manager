@@ -3,8 +3,10 @@ import TaskItem from "./TaskItem";
 const TaskList = ({ tasks, onDelete, onToggle, onEdit, isOverdue }) => {
   if (tasks.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-md p-12 text-center">
-        <p className="text-gray-500 text-lg">No tasks found</p>
+      <div className="border-[3px] border-dashed border-black bg-gray-50 p-12 text-center">
+        <p className="text-sm font-bold uppercase tracking-widest text-gray-500">
+          No tasks match your filters
+        </p>
       </div>
     );
   }

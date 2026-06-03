@@ -21,15 +21,19 @@ const TaskForm = ({ onSubmit, editingTask, onCancelEdit }) => {
       return;
     }
 
-    if (editingTask) {
-      await onSubmit(editingTask.id, { title, description, dueDate });
-    } else {
-      await onSubmit({ title, description, dueDate });
-    }
+    try {
+      if (editingTask) {
+        await onSubmit(editingTask.id, { title, description, dueDate });
+      } else {
+        await onSubmit({ title, description, dueDate });
+      }
 
-    setTitle("");
-    setDescription("");
-    setDueDate("");
+      setTitle("");
+      setDescription("");
+      setDueDate("");
+    } catch (error) {
+      console.error("Error submitting task:", error);
+    }
   };
 
   const handleCancel = () => {
@@ -39,64 +43,147 @@ const TaskForm = ({ onSubmit, editingTask, onCancelEdit }) => {
     onCancelEdit();
   };
 
+  const isEditing = editingTask !== null;
+
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8 sticky top-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">
-        {editingTask ? "Edit Task" : "Add New Task"}
-      </h2>
+    <div className="sticky top-8 border-[3px] border-black bg-[color:var(--brand)] p-7 shadow-[5px_5px_0_0_black]">
+      <div className="mb-6 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="flex size-9 items-center justify-center border-[2px] border-black bg-white">
+            {isEditing ? (
+              <svg
+                className="size-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="size-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+            )}
+          </div>
+          <h3 className="text-2xl font-bold uppercase tracking-tight">
+            {isEditing ? "Edit Task" : "New Task"}
+          </h3>
+        </div>
+        {isEditing && (
+          <button
+            type="button"
+            onClick={handleCancel}
+            aria-label="Cancel edit"
+            className="flex size-8 items-center justify-center border-[2px] border-black bg-white hover:bg-gray-100"
+          >
+            <svg
+              className="size-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-[0.2em]">
             Title
           </label>
           <input
             type="text"
-            placeholder="Enter task title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all"
+            placeholder="What needs doing?"
+            className="w-full border-[2px] border-black bg-white px-3 py-2.5 text-sm font-medium focus:outline-none"
           />
         </div>
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-[0.2em]">
             Description
           </label>
           <textarea
-            placeholder="Add details (optional)"
-            rows="3"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all resize-none"
+            rows={3}
+            placeholder="Add details (optional)"
+            className="w-full resize-none border-[2px] border-black bg-white px-3 py-2.5 text-sm focus:outline-none"
           />
         </div>
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Due Date
+        <div className="space-y-1.5">
+          <label className="block text-[10px] font-bold uppercase tracking-[0.2em]">
+            Due date
           </label>
           <input
             type="date"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all"
+            className="w-full border-[2px] border-black bg-white px-3 py-2.5 text-sm font-medium focus:outline-none"
           />
         </div>
-        <div className="space-y-3">
-          <button
-            type="submit"
-            className="w-full px-6 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-blue-700 hover:shadow-lg active:scale-[0.98] transition-all"
-          >
-            {editingTask ? "Update Task" : "Add Task"}
-          </button>
-          {editingTask && (
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="w-full px-6 py-4 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 active:scale-[0.98] transition-all"
-            >
-              Cancel Edit
-            </button>
+        <button
+          type="submit"
+          className="group flex w-full items-center justify-center gap-2 border-[2px] border-black bg-black py-3 text-sm font-bold uppercase tracking-[0.18em] text-white shadow-[3px_3px_0_0_black] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+        >
+          {isEditing ? (
+            <>
+              <svg
+                className="size-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              Save Changes
+            </>
+          ) : (
+            <>
+              <svg
+                className="size-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Add Task
+            </>
           )}
-        </div>
+        </button>
       </form>
     </div>
   );
