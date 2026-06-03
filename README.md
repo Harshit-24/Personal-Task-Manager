@@ -10,8 +10,8 @@ TaskVault is a full-stack task management application that helps users create, m
 
 ## 🌐 Live Demo
 
-- Frontend: Coming Soon
-- Backend API: Coming Soon
+- Frontend: https://personal-task-manager-virid-two.vercel.app/
+- Backend API: https://personal-task-manager-api-5rpa.onrender.com
 
 ## ✅ Assessment Requirements Coverage
 
